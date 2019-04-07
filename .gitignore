@@ -1,1 +1,2 @@
 node_modules
+mongod --dbpath="C:\Users\Maham Nazir\Documents\Goals\Learn NodeJS\Course 4 - Server-Side Development with NodeJS, Express and MongoDB\mongodb\data" --bind_ip 127.0.0.1

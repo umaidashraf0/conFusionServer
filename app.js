@@ -10,9 +10,10 @@ var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
+var passport = require('passport');
+var authenticate = require('./authenticate');
 
 const mongoose = require('mongoose');
-
 const url = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(url);
 
@@ -26,9 +27,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
 app.use(session({
   name: 'session-id',
   secret: '12345-67890-09876-54321',
@@ -37,10 +35,16 @@ app.use(session({
   store: new FileStore()
 }));
 
-function auth (req, res, next) {
-  console.log(req.session);
+app.use(passport.initialize());
+app.use(passport.session());
 
-  if (!req.session.user) {
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+function auth (req, res, next) {
+  console.log(req.user);
+
+  if (!req.user) {
     var err = new Error('You are not authenticated!');
     res.setHeader('WWW-Authenticate', 'Basic');                        
     err.status = 401;
@@ -48,18 +52,10 @@ function auth (req, res, next) {
     return;
   }
   else {
-    if (req.session.user === 'authenticated') {
-      console.log('req.session: ',req.session);
-      next();
-    }
-    else {
-      var err = new Error('You are not authenticated!');
-      err.status = 403;
-      next(err);
-    }
+    next();
   }
 }
-console.log('does this get printedd??????')
+
 app.use(cookieParser('the-immortal-coils'));
 app.use(auth);
 app.use(logger('dev'));

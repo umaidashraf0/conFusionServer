@@ -25,7 +25,6 @@ dishRouter.route('/')
     .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    console.log("trying somethingggg " + authenticate.verifyUser());
     Dishes.create(req.body)
     .then((dish) => {
         console.log('Dish Created ', dish);

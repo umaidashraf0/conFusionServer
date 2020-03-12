@@ -22,7 +22,7 @@ You will also need to go and install **Mongoose Database** in your computer as w
 
 Once you have installed all the necessary prerequisites, in your command prompt, type:
 ```
-mongod --dbpath="<path>\data" --bind_ip 127.0.0.1  --- WINDOWS
+mongod --dbpath="<path>\data" --bind_ip 127.0.0.1  --- (This is for Windows Only)
 ```
 Once your Mongo database is successfully running, open up a new terminal and type:
 ```
